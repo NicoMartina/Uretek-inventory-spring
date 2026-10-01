@@ -2,7 +2,6 @@ package com.uretek.uretek_inventory.services;
 
 import com.uretek.uretek_inventory.entities.Item;
 import com.uretek.uretek_inventory.repositories.ItemRepository;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
