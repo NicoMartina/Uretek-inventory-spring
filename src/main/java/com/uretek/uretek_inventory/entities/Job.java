@@ -26,5 +26,7 @@ public class Job {
     private String notes;
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(name = "mix_total")
+    private Double mixTotal;
 
 }

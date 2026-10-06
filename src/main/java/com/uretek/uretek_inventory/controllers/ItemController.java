@@ -19,8 +19,7 @@ public class ItemController {
 
     @PostMapping
     public Item create(@RequestBody Item item){
-        Item newItem = itemService.create(item);
-        return newItem;
+        return itemService.create(item);
     }
 
     @GetMapping
@@ -30,12 +29,13 @@ public class ItemController {
 
     @PutMapping("/{id}")
     public Item update(@PathVariable UUID id, @RequestBody Item request){
-        Item updatedItem =  itemService.update(id, request);
-        return updatedItem;
+        return itemService.update(id, request);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable UUID id){
         itemService.delete(id);
     }
+
+
 }
