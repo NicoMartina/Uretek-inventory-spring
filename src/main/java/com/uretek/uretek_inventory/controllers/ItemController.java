@@ -17,21 +17,25 @@ public class ItemController {
         this.itemService = itemService;
     }
 
+    // CREATE AN ITEM
     @PostMapping
     public Item create(@RequestBody Item item){
         return itemService.create(item);
     }
 
+    // FETCH ALL ITEMS
     @GetMapping
     public List<Item> getAllItems(){
         return itemService.getAllItems();
     }
 
+    // UPDATE AN ITEM
     @PutMapping("/{id}")
     public Item update(@PathVariable UUID id, @RequestBody Item request){
         return itemService.update(id, request);
     }
 
+    // DELETE AN ITEM
     @DeleteMapping("/{id}")
     public void delete(@PathVariable UUID id){
         itemService.delete(id);
