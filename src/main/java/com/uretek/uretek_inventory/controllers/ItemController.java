@@ -18,7 +18,7 @@ public class ItemController {
     }
 
     @PostMapping
-    public Item create(@RequestBody Item item){gti
+    public Item create(@RequestBody Item item){
         return itemService.create(item);
     }
 
