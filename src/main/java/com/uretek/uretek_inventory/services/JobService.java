@@ -36,12 +36,12 @@ public class JobService {
         double isoAmount = request.getMixTotal() * 0.63;
         double resinaAmount = request.getMixTotal() * 0.37;
 
-        itemRepository.findByName("ISO Tank A").ifPresent(iso -> {
+        itemRepository.findByName("ISO").ifPresent(iso -> {
             iso.setCurrentStock(iso.getCurrentStock() - isoAmount);
             itemRepository.save(iso);
         });
 
-        itemRepository.findByName("Resina Tank B").ifPresent(resina -> {
+        itemRepository.findByName("Resina").ifPresent(resina -> {
             resina.setCurrentStock((resina.getCurrentStock() - resinaAmount));
             itemRepository.save(resina);
         });
