@@ -28,5 +28,9 @@ public class Job {
     private LocalDateTime createdAt = LocalDateTime.now();
     @Column(name = "mix_total")
     private Double mixTotal;
+    @Column(name = "client_name")
+    private String clientName;
+    @Enumerated(EnumType.STRING)
+    private JobStatus status;
 
 }

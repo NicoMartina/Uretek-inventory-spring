@@ -1,5 +1,6 @@
 package com.uretek.uretek_inventory.dto;
 
+import com.uretek.uretek_inventory.entities.JobStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,4 +14,6 @@ public class CreateJobRequest {
     private LocalDate jobDate;
     private String notes;
     private Double mixTotal;
+    private String clientName;
+    private JobStatus status;
 }
