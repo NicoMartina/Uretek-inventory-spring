@@ -58,6 +58,10 @@ public class JobService {
                     job.setPresupuestoNumber(details.getPresupuestoNumber());
                     job.setJobDate(details.getJobDate());
                     job.setNotes(details.getNotes());
+                    job.setMixTotal(details.getMixTotal());
+                    job.setClientName(details.getClientName());
+                    job.setStatus(details.getStatus());
+                    job.setQuotedAmount(details.getQuotedAmount());
                     return jobRepository.save(job);
                 })
                 .orElseThrow(() -> new RuntimeException("Job not found"));
