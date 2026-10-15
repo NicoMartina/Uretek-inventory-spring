@@ -34,6 +34,7 @@ public class JobService {
         job.setMixTotal(request.getMixTotal());
         job.setClientName(request.getClientName());
         job.setStatus(request.getStatus());
+        job.setQuotedAmount(request.getQuotedAmount());
 
         double isoAmount = request.getMixTotal() * 0.63;
         double resinaAmount = request.getMixTotal() * 0.37;

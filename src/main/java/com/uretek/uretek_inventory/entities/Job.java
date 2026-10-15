@@ -32,5 +32,7 @@ public class Job {
     private String clientName;
     @Enumerated(EnumType.STRING)
     private JobStatus status;
+    @Column(name = "quoted_amount")
+    private Double quotedAmount;
 
 }

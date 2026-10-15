@@ -16,4 +16,5 @@ public class CreateJobRequest {
     private Double mixTotal;
     private String clientName;
     private JobStatus status;
+    private Double quotedAmount;
 }
