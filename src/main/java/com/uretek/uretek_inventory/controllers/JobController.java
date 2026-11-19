@@ -3,6 +3,7 @@ package com.uretek.uretek_inventory.controllers;
 import com.uretek.uretek_inventory.dto.CreateJobRequest;
 import com.uretek.uretek_inventory.entities.Job;
 import com.uretek.uretek_inventory.services.JobService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,23 +22,23 @@ public class JobController {
 
     @PostMapping
     public ResponseEntity<Job> create(@RequestBody CreateJobRequest job){
-        Job created = jobService.create(job);
-        return ResponseEntity.status(201).body(created);
+        return ResponseEntity.status(HttpStatus.CREATED).body(jobService.create(new CreateJobRequest()));
     }
 
     @GetMapping
-    public List<Job> getAllItems(){
-        return jobService.getAllJobs();
+    public ResponseEntity<List<Job>> getAllItems(){
+
+        return ResponseEntity.ok(jobService.getAllJobs());
     }
 
     @PutMapping("/{id}")
-    public Job update(@PathVariable UUID id, @RequestBody Job request){
-        Job updatedJob = jobService.update(id, request);
-        return updatedJob;
+    public ResponseEntity<Job> update(@PathVariable UUID id, @RequestBody CreateJobRequest request){
+        return ResponseEntity.ok(jobService.update(id, request));
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable UUID id){
+    public ResponseEntity<Void> delete(@PathVariable UUID id){
         jobService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
