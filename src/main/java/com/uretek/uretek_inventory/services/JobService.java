@@ -2,6 +2,8 @@ package com.uretek.uretek_inventory.services;
 
 import com.uretek.uretek_inventory.dto.CreateJobRequest;
 import com.uretek.uretek_inventory.entities.Job;
+import com.uretek.uretek_inventory.exceptions.InsufficientStockException;
+import com.uretek.uretek_inventory.exceptions.ResourceNotFoundException;
 import com.uretek.uretek_inventory.repositories.ItemRepository;
 import com.uretek.uretek_inventory.repositories.JobRepository;
 import org.springframework.stereotype.Service;
@@ -20,13 +22,35 @@ public class JobService {
         this.itemRepository = itemRepository;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Job> getAllJobs(){
         return jobRepository.findAll();
     }
 
     @Transactional
     public Job create(CreateJobRequest request) {
+        var iso = itemRepository.findByName("ISO")
+                .orElseThrow(() -> new ResourceNotFoundException("Item", "ISO"));
+
+        var resina = itemRepository.findByName("Resina")
+                .orElseThrow(() -> new ResourceNotFoundException("Item", "Resina"));
+
+        double isoAmount = request.getMixTotal() * 0.63;
+        double resinaAmount = request.getMixTotal() * 0.37;
+
+        if (iso.getCurrentStock() < isoAmount) {
+            throw new InsufficientStockException("ISO", iso.getCurrentStock(), isoAmount);
+        }
+
+        if ( resina.getCurrentStock() < resinaAmount){
+            throw new InsufficientStockException("Resina", resina.getCurrentStock(), resinaAmount);
+        }
+
+        iso.setCurrentStock(iso.getCurrentStock() - isoAmount);
+        resina.setCurrentStock(resina.getCurrentStock() - resinaAmount);
+        itemRepository.save(iso);
+        itemRepository.save(resina);
+
         Job job = new Job();
         job.setPresupuestoNumber(request.getPresupuestoNumber());
         job.setJobDate(request.getJobDate());
@@ -36,39 +60,34 @@ public class JobService {
         job.setStatus(request.getStatus());
         job.setQuotedAmount(request.getQuotedAmount());
 
-        double isoAmount = request.getMixTotal() * 0.63;
-        double resinaAmount = request.getMixTotal() * 0.37;
-
-        itemRepository.findByName("ISO").ifPresent(iso -> {
-            iso.setCurrentStock(iso.getCurrentStock() - isoAmount);
-            itemRepository.save(iso);
-        });
-
-        itemRepository.findByName("Resina").ifPresent(resina -> {
-            resina.setCurrentStock((resina.getCurrentStock() - resinaAmount));
-            itemRepository.save(resina);
-        });
         return jobRepository.save(job);
     }
 
+
     @Transactional
-    public Job update(UUID id, Job details){
-        return jobRepository.findById(id)
-                .map(job ->{
-                    job.setPresupuestoNumber(details.getPresupuestoNumber());
-                    job.setJobDate(details.getJobDate());
-                    job.setNotes(details.getNotes());
-                    job.setMixTotal(details.getMixTotal());
-                    job.setClientName(details.getClientName());
-                    job.setStatus(details.getStatus());
-                    job.setQuotedAmount(details.getQuotedAmount());
-                    return jobRepository.save(job);
-                })
-                .orElseThrow(() -> new RuntimeException("Job not found"));
+    public Job update(UUID id, CreateJobRequest request){
+        Job job =  jobRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Job", id));
+
+
+        job.setPresupuestoNumber(request.getPresupuestoNumber());
+        job.setJobDate(request.getJobDate());
+        job.setNotes(request.getNotes());
+        job.setMixTotal(request.getMixTotal());
+        job.setClientName(request.getClientName());
+        job.setStatus(request.getStatus());
+        job.setQuotedAmount(request.getQuotedAmount());
+
+        return jobRepository.save(job);
+
     }
+
 
     @Transactional
     public void delete(UUID id) {
+        if (!jobRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Job", id);
+        }
         jobRepository.deleteById(id);
     }
 
