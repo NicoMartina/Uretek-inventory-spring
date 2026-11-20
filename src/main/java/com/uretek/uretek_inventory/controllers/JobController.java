@@ -1,6 +1,7 @@
 package com.uretek.uretek_inventory.controllers;
 
 import com.uretek.uretek_inventory.dto.CreateJobRequest;
+import com.uretek.uretek_inventory.dto.UpdateJobRequest;
 import com.uretek.uretek_inventory.entities.Job;
 import com.uretek.uretek_inventory.services.JobService;
 import org.springframework.http.HttpStatus;
@@ -21,8 +22,8 @@ public class JobController {
     }
 
     @PostMapping
-    public ResponseEntity<Job> create(@RequestBody CreateJobRequest job){
-        return ResponseEntity.status(HttpStatus.CREATED).body(jobService.create(new CreateJobRequest()));
+    public ResponseEntity<Job> create(@RequestBody CreateJobRequest request){
+        return ResponseEntity.status(HttpStatus.CREATED).body(jobService.create(request));
     }
 
     @GetMapping
@@ -32,7 +33,7 @@ public class JobController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Job> update(@PathVariable UUID id, @RequestBody CreateJobRequest request){
+    public ResponseEntity<Job> update(@PathVariable UUID id, @RequestBody UpdateJobRequest request){
         return ResponseEntity.ok(jobService.update(id, request));
     }
 

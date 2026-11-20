@@ -1,6 +1,7 @@
 package com.uretek.uretek_inventory.services;
 
 import com.uretek.uretek_inventory.dto.CreateJobRequest;
+import com.uretek.uretek_inventory.dto.UpdateJobRequest;
 import com.uretek.uretek_inventory.entities.Job;
 import com.uretek.uretek_inventory.exceptions.InsufficientStockException;
 import com.uretek.uretek_inventory.exceptions.ResourceNotFoundException;
@@ -29,10 +30,10 @@ public class JobService {
 
     @Transactional
     public Job create(CreateJobRequest request) {
-        var iso = itemRepository.findByName("ISO")
+        var iso = itemRepository.findByName("ISO Tank A")
                 .orElseThrow(() -> new ResourceNotFoundException("Item", "ISO"));
 
-        var resina = itemRepository.findByName("Resina")
+        var resina = itemRepository.findByName("Resina Tank B")
                 .orElseThrow(() -> new ResourceNotFoundException("Item", "Resina"));
 
         double isoAmount = request.getMixTotal() * 0.63;
@@ -65,7 +66,7 @@ public class JobService {
 
 
     @Transactional
-    public Job update(UUID id, CreateJobRequest request){
+    public Job update(UUID id, UpdateJobRequest request){
         Job job =  jobRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Job", id));
 
