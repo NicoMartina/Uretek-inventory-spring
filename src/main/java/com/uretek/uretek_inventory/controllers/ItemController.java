@@ -2,9 +2,10 @@ package com.uretek.uretek_inventory.controllers;
 
 import com.uretek.uretek_inventory.entities.Item;
 import com.uretek.uretek_inventory.services.ItemService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.data.domain.Pageable;
 import java.util.UUID;
 
 @RestController
@@ -25,8 +26,8 @@ public class ItemController {
 
     // FETCH ALL ITEMS
     @GetMapping
-    public List<Item> getAllItems(){
-        return itemService.getAllItems();
+    public Page<Item> getAllItems(@PageableDefault(size = 10, sort = "name")Pageable pageable){
+        return itemService.getAllItems(pageable);
     }
 
     // UPDATE AN ITEM

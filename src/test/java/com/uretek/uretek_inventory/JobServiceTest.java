@@ -13,8 +13,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
-
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -70,7 +70,7 @@ public class JobServiceTest {
 
 
         when(itemRepository.findByName("ISO")).thenReturn(Optional.of(isoItem));
-        when(jobRepository.save(any())).thenReturn(job);
+        when(jobRepository.save(any(Job.class))).thenReturn(job);
 
 
         // ACT

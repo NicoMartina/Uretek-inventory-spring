@@ -3,14 +3,18 @@ package com.uretek.uretek_inventory.services;
 import com.uretek.uretek_inventory.dto.CreateJobRequest;
 import com.uretek.uretek_inventory.dto.UpdateJobRequest;
 import com.uretek.uretek_inventory.entities.Job;
+import com.uretek.uretek_inventory.entities.JobStatus;
 import com.uretek.uretek_inventory.exceptions.InsufficientStockException;
 import com.uretek.uretek_inventory.exceptions.ResourceNotFoundException;
 import com.uretek.uretek_inventory.repositories.ItemRepository;
 import com.uretek.uretek_inventory.repositories.JobRepository;
+import com.uretek.uretek_inventory.repositories.JobSpecification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -24,8 +28,11 @@ public class JobService {
     }
 
     @Transactional(readOnly = true)
-    public List<Job> getAllJobs(){
-        return jobRepository.findAll();
+    public Page<Job> getAllJobs(Pageable pageable, JobStatus jobStatus, String clientName){
+        Specification<Job> spec = Specification
+                .where(JobSpecification.hasStatus(jobStatus))
+                .and(JobSpecification.hasClientName(clientName));
+        return jobRepository.findAll(spec, pageable);
     }
 
     @Transactional
