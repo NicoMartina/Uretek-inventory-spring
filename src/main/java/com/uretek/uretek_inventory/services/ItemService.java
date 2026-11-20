@@ -2,10 +2,12 @@ package com.uretek.uretek_inventory.services;
 
 import com.uretek.uretek_inventory.entities.Item;
 import com.uretek.uretek_inventory.repositories.ItemRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import org.springframework.data.domain.Pageable;
+
 import java.util.UUID;
 
 @Service
@@ -16,9 +18,9 @@ public class ItemService {
         this.itemRepository = itemRepository;
     }
 
-    @Transactional
-    public List<Item> getAllItems(){
-        return itemRepository.findAll();
+    @Transactional(readOnly = true)
+    public Page<Item> getAllItems(Pageable pageable){
+        return itemRepository.findAll(pageable);
     }
 
     @Transactional

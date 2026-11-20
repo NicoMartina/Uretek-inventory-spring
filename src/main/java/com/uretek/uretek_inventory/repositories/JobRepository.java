@@ -2,8 +2,9 @@ package com.uretek.uretek_inventory.repositories;
 
 import com.uretek.uretek_inventory.entities.Job;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.UUID;
 
-public interface JobRepository extends JpaRepository<Job, UUID> {
+public interface JobRepository extends JpaRepository<Job, UUID>, JpaSpecificationExecutor<Job> {
 }

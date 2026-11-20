@@ -3,10 +3,14 @@ package com.uretek.uretek_inventory.controllers;
 import com.uretek.uretek_inventory.dto.CreateJobRequest;
 import com.uretek.uretek_inventory.dto.UpdateJobRequest;
 import com.uretek.uretek_inventory.entities.Job;
+import com.uretek.uretek_inventory.entities.JobStatus;
 import com.uretek.uretek_inventory.services.JobService;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.UUID;
@@ -27,9 +31,12 @@ public class JobController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Job>> getAllItems(){
+    public ResponseEntity<Page<Job>> getAllJobs(
+            @PageableDefault(size = 10, sort = "jobDate")Pageable pageable,
+            @RequestParam(required = false)JobStatus status,
+            @RequestParam(required = false) String clientName){
 
-        return ResponseEntity.ok(jobService.getAllJobs());
+        return ResponseEntity.ok(jobService.getAllJobs(pageable, status, clientName));
     }
 
     @PutMapping("/{id}")
